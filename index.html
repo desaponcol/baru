@@ -1,18 +1,47 @@
 <!DOCTYPE html>
-
 <html>
 
 <head>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<title>Absensi Desa</title>
+
 <style>
 
 body{
 
-font-family:Arial;
+margin:0;
+
+font-family:system-ui;
+
+background:#f4f6f9;
+
+}
+
+.header{
+
+background:#ff6b6b;
+
+color:white;
 
 padding:20px;
+
+border-radius:0 0 20px 20px;
+
+}
+
+.card{
+
+background:white;
+
+margin:15px;
+
+padding:20px;
+
+border-radius:15px;
+
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
 
 }
 
@@ -22,13 +51,17 @@ width:100%;
 
 padding:15px;
 
+border:none;
+
+border-radius:12px;
+
 background:#ff6b6b;
 
 color:white;
 
-border:none;
+font-size:16px;
 
-border-radius:10px;
+margin-top:10px;
 
 }
 
@@ -36,9 +69,83 @@ input{
 
 width:100%;
 
+padding:12px;
+
+margin:5px 0;
+
+border-radius:10px;
+
+border:1px solid #ddd;
+
+}
+
+.menu{
+
+display:grid;
+
+grid-template-columns:1fr 1fr;
+
+gap:10px;
+
+}
+
+.menu button{
+
+background:white;
+
+color:black;
+
+box-shadow:0 3px 10px rgba(0,0,0,0.1);
+
+}
+
+.stat{
+
+display:grid;
+
+grid-template-columns:1fr 1fr;
+
+gap:10px;
+
+}
+
+.stat div{
+
+background:#fff;
+
+padding:15px;
+
+border-radius:10px;
+
+text-align:center;
+
+box-shadow:0 3px 10px rgba(0,0,0,0.1);
+
+}
+
+.bottom{
+
+position:fixed;
+
+bottom:0;
+
+width:100%;
+
+background:white;
+
+display:flex;
+
+justify-content:space-around;
+
 padding:10px;
 
-margin:5px;
+box-shadow:0 -3px 10px rgba(0,0,0,0.1);
+
+}
+
+.hidden{
+
+display:none;
 
 }
 
@@ -48,25 +155,139 @@ margin:5px;
 
 <body>
 
+<div id="loginPage">
+
+<div class="header">
+
 <h2>Absensi Desa</h2>
 
-<input id="user" placeholder="username">
+</div>
 
-<input id="pass" placeholder="password">
+<div class="card">
+
+<h3>Login</h3>
+
+<input id="user" placeholder="Username">
+
+<input id="pass" type="password" placeholder="Password">
 
 <button onclick="login()">
 
 LOGIN
 
 </button>
-<button onclick="absen()">
+
+</div>
+
+</div>
+
+<div id="dashboard" class="hidden">
+
+<div class="header">
+
+<h2 id="namaUser">
+
+Dashboard
+
+</h2>
+
+<p>
+
+Jam kerja 07:30 - 16:00
+
+</p>
+
+</div>
+
+<div class="card">
+
+<h3>Absensi</h3>
+
+<button onclick="absenMasuk()">
 
 ABSEN MASUK
 
 </button>
+
+<button onclick="absenPulang()">
+
+ABSEN PULANG
+
+</button>
+
+</div>
+
+<div class="card">
+
+<h3>Statistik</h3>
+
+<div class="stat">
+
+<div>
+
+<h2 id="hadir">
+
+0
+
+</h2>
+
+<p>Hadir</p>
+
+</div>
+
+<div>
+
+<h2 id="izin">
+
+0
+
+</h2>
+
+<p>Izin</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h3>Menu</h3>
+
+<div class="menu">
+
+<button>History</button>
+
+<button>Izin</button>
+
+<button>Cuti</button>
+
+<button>Profil</button>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="bottom">
+
+Home
+
+Absen
+
+History
+
+Profil
+
+</div>
+
 <script>
 
-const API="https://script.google.com/macros/s/AKfycby7US4cTwebBFmXJ8O4Wo8gMk2fWr3NQz0fbqb4WFLwLzhWWqtEtOMAJ1XGHQ7CuATw/exec";
+const API=
+
+"https://script.google.com/macros/s/AKfycby7US4cTwebBFmXJ8O4Wo8gMk2fWr3NQz0fbqb4WFLwLzhWWqtEtOMAJ1XGHQ7CuATw/exec";
 
 async function login()
 {
@@ -102,9 +323,18 @@ await res.json();
 if(data.status)
 {
 
-alert("Login berhasil");
-
 localStorage.nama=data.nama;
+
+localStorage.jabatan=data.jabatan;
+
+document.getElementById("loginPage")
+.classList.add("hidden");
+
+document.getElementById("dashboard")
+.classList.remove("hidden");
+
+document.getElementById("namaUser")
+.innerText=data.nama;
 
 }
 else
@@ -115,18 +345,37 @@ alert("Login gagal");
 }
 
 }
-async function absen()
+
+function getGPS()
 {
 
-navigator
-.geolocation
-.getCurrentPosition(async pos=>{
+return new Promise((resolve)=>{
 
-let lat=
-pos.coords.latitude;
+navigator.geolocation.getCurrentPosition(
 
-let lng=
-pos.coords.longitude;
+pos=>{
+
+resolve({
+
+lat:pos.coords.latitude,
+
+lng:pos.coords.longitude
+
+});
+
+}
+
+);
+
+});
+
+}
+
+async function absenMasuk()
+{
+
+let gps=
+await getGPS();
 
 let res=
 await fetch(API,{
@@ -139,11 +388,11 @@ action:"absenMasuk",
 
 nama:localStorage.nama,
 
-jabatan:"KAUR",
+jabatan:localStorage.jabatan,
 
-lat:lat,
+lat:gps.lat,
 
-lng:lng,
+lng:gps.lng,
 
 foto:"",
 
@@ -156,11 +405,28 @@ key:"SIGAP2026"
 let data=
 await res.json();
 
-alert("Absensi berhasil");
+if(data.status)
+{
 
-});
+alert("Absensi masuk berhasil");
 
 }
+else
+{
+
+alert("Gagal");
+
+}
+
+}
+
+async function absenPulang()
+{
+
+alert("Fitur berikutnya");
+
+}
+
 </script>
 
 </body>
