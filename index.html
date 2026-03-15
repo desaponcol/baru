@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-
 <html>
-
 <head>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,101 +9,50 @@
 <style>
 
 body{
-
 font-family:system-ui;
-
 margin:0;
-
 background:#f4f7fb;
-
 }
 
 .header{
-
-background:#c8a96a;
-
+background:linear-gradient(135deg,#c8a96a,#8b6f3d);
 color:white;
-
 padding:20px;
-
 border-radius:0 0 20px 20px;
-
 }
 
 .card{
-
 background:white;
-
 margin:15px;
-
 padding:15px;
-
 border-radius:15px;
-
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
-
+box-shadow:0 5px 20px rgba(0,0,0,0.1);
 }
 
 button{
-
 width:100%;
-
 padding:15px;
-
 border:none;
-
 border-radius:12px;
-
 background:#c8a96a;
-
 color:white;
-
 margin-top:10px;
-
 }
 
 input{
-
 width:100%;
-
 padding:12px;
-
 margin-top:10px;
-
 border-radius:10px;
-
 border:1px solid #ddd;
-
 }
 
 .page{
-
 display:none;
-
 }
 
 .active{
-
 display:block;
-
-}
-
-.bottom{
-
-position:fixed;
-
-bottom:0;
-
-width:100%;
-
-background:white;
-
-display:flex;
-
-justify-content:space-around;
-
-padding:10px;
-
 }
 
 </style>
@@ -117,22 +64,15 @@ padding:10px;
 <div id="login" class="page active">
 
 <div class="header">
-
 <h2>SIGAP DESA</h2>
-
 </div>
 
 <div class="card">
 
-<input id="u" placeholder="Username">
+<input id="user" placeholder="Username">
+<input id="pass" type="password" placeholder="Password">
 
-<input id="p" type="password" placeholder="Password">
-
-<button onclick="login()">
-
-LOGIN
-
-</button>
+<button onclick="login()">LOGIN</button>
 
 </div>
 
@@ -141,34 +81,15 @@ LOGIN
 <div id="home" class="page">
 
 <div class="header">
-
 <h2 id="nama"></h2>
-
 <p id="jabatan"></p>
-
 </div>
 
 <div class="card">
 
-<h3>Statistik</h3>
-
-<p>Hadir : <span id="hadir"></span></p>
-
-</div>
-
-<div class="card">
-
-<button onclick="loadHistory()">
-
-History
-
-</button>
-
-<button onclick="openIzin()">
-
-Izin
-
-</button>
+<button onclick="absenMasuk()">ABSEN MASUK</button>
+<button onclick="absenPulang()">ABSEN PULANG</button>
+<button onclick="loadHistory()">HISTORY</button>
 
 </div>
 
@@ -177,50 +98,14 @@ Izin
 <div id="history" class="page">
 
 <div class="header">
-
 <h2>History</h2>
-
 </div>
 
 <div class="card">
 
-<div id="list">
+<div id="list"></div>
 
-</div>
-
-<button onclick="openHome()">
-
-Kembali
-
-</button>
-
-</div>
-
-</div>
-
-<div id="izin" class="page">
-
-<div class="header">
-
-<h2>Izin</h2>
-
-</div>
-
-<div class="card">
-
-<input id="ket">
-
-<button onclick="kirimIzin()">
-
-Kirim
-
-</button>
-
-<button onclick="openHome()">
-
-Kembali
-
-</button>
+<button onclick="openPage('home')">Kembali</button>
 
 </div>
 
@@ -228,60 +113,43 @@ Kembali
 
 <script>
 
-const API="https://script.google.com/macros/s/AKfycbzsrXtcB_AtU1Z5X4j0c_b0hgwiVphM9_GqsxFX199YAnwZdE5I8LtMm_rWgenhmd43/exec";
+const API="https://script.google.com/macros/s/AKfycbxlYTt1_gDgCF9VyX2jn-P9IiSbJlQQ8Xl--I8i6fz5sidhCIrAZThJUsKbXfOjByuf/exec"
 
-function page(id){
+function openPage(id){
 
-document
-.querySelectorAll(".page")
+document.querySelectorAll(".page")
 .forEach(p=>p.classList.remove("active"));
 
-document
-.getElementById(id)
+document.getElementById(id)
 .classList.add("active");
 
 }
 
 async function login(){
 
-let res=
-await fetch(API,{
-
+let r=await fetch(API,{
 method:"POST",
-
 body:new URLSearchParams({
-
 action:"login",
-
-username:u.value,
-
-password:p.value,
-
+username:user.value,
+password:pass.value,
 key:"SIGAP2026"
-
 })
-
 });
 
-let data=
-await res.json();
+let d=await r.json();
 
-if(data.status){
+if(d.status){
 
-localStorage.nama=data.nama;
+localStorage.nama=d.nama;
+localStorage.jabatan=d.jabatan;
 
-localStorage.jabatan=data.jabatan;
+nama.innerText=d.nama;
+jabatan.innerText=d.jabatan;
 
-nama.innerText=data.nama;
+openPage("home");
 
-jabatan.innerText=data.jabatan;
-
-loadDashboard();
-
-page("home");
-
-}
-else{
+}else{
 
 alert("Login gagal");
 
@@ -289,108 +157,81 @@ alert("Login gagal");
 
 }
 
-async function loadDashboard(){
+async function absenMasuk(){
 
-let res=
-await fetch(API,{
+navigator.geolocation.getCurrentPosition(async pos=>{
 
+let r=await fetch(API,{
 method:"POST",
-
 body:new URLSearchParams({
-
-action:"dashboard",
-
+action:"absenMasuk",
 nama:localStorage.nama,
-
+jabatan:localStorage.jabatan,
+lat:pos.coords.latitude,
+lng:pos.coords.longitude,
+foto:"",
+device:navigator.userAgent,
 key:"SIGAP2026"
-
 })
+});
+
+alert("Absen masuk berhasil");
 
 });
 
-let d=
-await res.json();
+}
 
-hadir.innerText=d.hadir;
+async function absenPulang(){
+
+navigator.geolocation.getCurrentPosition(async pos=>{
+
+await fetch(API,{
+method:"POST",
+body:new URLSearchParams({
+action:"absenPulang",
+nama:localStorage.nama,
+lat:pos.coords.latitude,
+lng:pos.coords.longitude,
+foto:"",
+device:navigator.userAgent,
+key:"SIGAP2026"
+})
+});
+
+alert("Absen pulang berhasil");
+
+});
 
 }
 
 async function loadHistory(){
 
-let res=
-await fetch(API,{
-
+let r=await fetch(API,{
 method:"POST",
-
 body:new URLSearchParams({
-
 action:"history",
-
 nama:localStorage.nama,
-
 key:"SIGAP2026"
-
 })
-
 });
 
-let d=
-await res.json();
+let d=await r.json();
 
 let html="";
 
 d.data.forEach(r=>{
 
-html+=r[0]+" "+r[3]+"<br>";
+html+=r[1]+" "+r[4]+"<br>";
 
 });
 
 list.innerHTML=html;
 
-page("history");
-
-}
-
-async function kirimIzin(){
-
-await fetch(API,{
-
-method:"POST",
-
-body:new URLSearchParams({
-
-action:"izin",
-
-nama:localStorage.nama,
-
-ket:ket.value,
-
-key:"SIGAP2026"
-
-})
-
-});
-
-alert("Izin terkirim");
-
-page("home");
-
-}
-
-function openHome(){
-
-page("home");
-
-}
-
-function openIzin(){
-
-page("izin");
+openPage("history");
 
 }
 
 </script>
 
 </body>
-
 </html>
