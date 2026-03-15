@@ -10,136 +10,101 @@
 
 <style>
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:system-ui;
-}
-
 body{
+
+font-family:system-ui;
+
+margin:0;
+
 background:#f4f7fb;
+
 }
 
 .header{
-background:linear-gradient(135deg,#c8a96a,#8b6f3d);
-color:white;
-padding:20px;
-border-radius:0 0 25px 25px;
-}
 
-.container{
-padding:15px;
-padding-bottom:90px;
+background:#c8a96a;
+
+color:white;
+
+padding:20px;
+
+border-radius:0 0 20px 20px;
+
 }
 
 .card{
+
 background:white;
+
+margin:15px;
+
 padding:15px;
+
 border-radius:15px;
-margin-bottom:15px;
-box-shadow:0 5px 20px rgba(0,0,0,0.08);
+
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+
 }
 
 button{
+
 width:100%;
-padding:14px;
+
+padding:15px;
+
 border:none;
+
 border-radius:12px;
+
 background:#c8a96a;
+
 color:white;
-font-size:15px;
+
 margin-top:10px;
-cursor:pointer;
+
 }
 
 input{
+
 width:100%;
+
 padding:12px;
+
+margin-top:10px;
+
 border-radius:10px;
+
 border:1px solid #ddd;
-margin-top:8px;
+
 }
 
 .page{
+
 display:none;
+
 }
 
 .active{
+
 display:block;
+
 }
 
 .bottom{
+
 position:fixed;
+
 bottom:0;
+
 width:100%;
+
 background:white;
+
 display:flex;
+
 justify-content:space-around;
-padding:12px;
-box-shadow:0 -5px 20px rgba(0,0,0,0.08);
-}
 
-.nav{
-text-align:center;
-font-size:12px;
-color:#777;
-cursor:pointer;
-}
-
-.nav div{
-font-size:22px;
-}
-
-.stat{
-display:flex;
-justify-content:space-between;
-margin-top:10px;
-}
-
-.box{
-background:#fafafa;
 padding:10px;
-border-radius:10px;
-width:32%;
-text-align:center;
-}
-
-.dark{
-background:#1e1e1e;
-color:white;
-}
-
-.dark .card{
-background:#2b2b2b;
-color:white;
-}
-
-.dark .bottom{
-background:#2b2b2b;
-}
-
-.loading{
-
-background:#00000080;
-
-position:fixed;
-
-width:100%;
-
-height:100%;
-
-display:none;
-
-align-items:center;
-
-justify-content:center;
-
-color:white;
-
-font-size:18px;
-
-z-index:999;
 
 }
 
@@ -149,37 +114,23 @@ z-index:999;
 
 <body>
 
-<div class="loading" id="loading">
-
-Loading...
-
-</div>
-
-<!-- LOGIN -->
-
-<div id="loginPage" class="page active">
+<div id="login" class="page active">
 
 <div class="header">
 
 <h2>SIGAP DESA</h2>
 
-<p>Sistem Absensi Digital</p>
-
 </div>
-
-<div class="container">
 
 <div class="card">
 
-<h3>Login</h3>
+<input id="u" placeholder="Username">
 
-<input id="user" placeholder="Username">
-
-<input id="pass" type="password" placeholder="Password">
+<input id="p" type="password" placeholder="Password">
 
 <button onclick="login()">
 
-MASUK
+LOGIN
 
 </button>
 
@@ -187,239 +138,89 @@ MASUK
 
 </div>
 
-</div>
-
-<!-- HOME -->
-
-<div id="homePage" class="page">
+<div id="home" class="page">
 
 <div class="header">
 
-<h2 id="namaUser">
+<h2 id="nama"></h2>
 
-User
-
-</h2>
-
-<p id="jabatanUser">
-
-Jabatan
-
-</p>
-
-</div>
-
-<div class="container">
-
-<div class="card">
-
-<h3>Statistik Bulan Ini</h3>
-
-<div class="stat">
-
-<div class="box">
-
-Hadir
-
-<h2 id="hadir">
-
-0
-
-</h2>
-
-</div>
-
-<div class="box">
-
-Izin
-
-<h2 id="izin">
-
-0
-
-</h2>
-
-</div>
-
-<div class="box">
-
-Cuti
-
-<h2 id="cuti">
-
-0
-
-</h2>
-
-</div>
-
-</div>
+<p id="jabatan"></p>
 
 </div>
 
 <div class="card">
 
-<h3>Absensi</h3>
+<h3>Statistik</h3>
 
-<button onclick="absenMasuk()">
-
-ABSEN MASUK
-
-</button>
-
-<button onclick="absenPulang()">
-
-ABSEN PULANG
-
-</button>
+<p>Hadir : <span id="hadir"></span></p>
 
 </div>
-
-</div>
-
-</div>
-
-<!-- HISTORY -->
-
-<div id="historyPage" class="page">
-
-<div class="header">
-
-<h2>History Absensi</h2>
-
-</div>
-
-<div class="container">
 
 <div class="card">
 
-<div id="historyList">
-
-Belum ada data
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- IZIN -->
-
-<div id="izinPage" class="page">
-
-<div class="header">
-
-<h2>Pengajuan Izin</h2>
-
-</div>
-
-<div class="container">
-
-<div class="card">
-
-<input id="ketIzin" placeholder="Keterangan">
-
-<button onclick="kirimIzin()">
-
-Kirim Izin
-
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- PROFILE -->
-
-<div id="profilePage" class="page">
-
-<div class="header">
-
-<h2>Profile</h2>
-
-</div>
-
-<div class="container">
-
-<div class="card">
-
-<p id="profileNama"></p>
-
-<p id="profileJabatan"></p>
-
-<p id="profileRole"></p>
-
-<button onclick="toggleDark()">
-
-Dark Mode
-
-</button>
-
-<button onclick="logout()">
-
-Logout
-
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- NAV -->
-
-<div class="bottom">
-
-<div class="nav" onclick="openPage('homePage')">
-
-<div>
-
-🏠
-
-</div>
-
-Home
-
-</div>
-
-<div class="nav" onclick="openPage('historyPage')">
-
-<div>
-
-📋
-
-</div>
+<button onclick="loadHistory()">
 
 History
 
-</div>
+</button>
 
-<div class="nav" onclick="openPage('izinPage')">
-
-<div>
-
-📝
-
-</div>
+<button onclick="openIzin()">
 
 Izin
 
-</div>
-
-<div class="nav" onclick="openPage('profilePage')">
-
-<div>
-
-👤
+</button>
 
 </div>
 
-Profile
+</div>
+
+<div id="history" class="page">
+
+<div class="header">
+
+<h2>History</h2>
+
+</div>
+
+<div class="card">
+
+<div id="list">
+
+</div>
+
+<button onclick="openHome()">
+
+Kembali
+
+</button>
+
+</div>
+
+</div>
+
+<div id="izin" class="page">
+
+<div class="header">
+
+<h2>Izin</h2>
+
+</div>
+
+<div class="card">
+
+<input id="ket">
+
+<button onclick="kirimIzin()">
+
+Kirim
+
+</button>
+
+<button onclick="openHome()">
+
+Kembali
+
+</button>
 
 </div>
 
@@ -427,25 +228,13 @@ Profile
 
 <script>
 
-const API="https://script.google.com/macros/s/AKfycbzv04FE5KNG1ad1LrjDNHVAyKVu8CRD8HIGan-WeaLTG_1r-HzTH5xZHdMZFgXmBnwn/exec";
+const API="https://script.google.com/macros/s/AKfycbzsrXtcB_AtU1Z5X4j0c_b0hgwiVphM9_GqsxFX199YAnwZdE5I8LtMm_rWgenhmd43/exec";
 
-function loading(x){
-
-document
-.getElementById("loading")
-.style.display=x;
-
-}
-
-function openPage(id){
+function page(id){
 
 document
 .querySelectorAll(".page")
-.forEach(p=>{
-
-p.classList.remove("active");
-
-});
+.forEach(p=>p.classList.remove("active"));
 
 document
 .getElementById(id)
@@ -454,20 +243,6 @@ document
 }
 
 async function login(){
-
-let u=user.value;
-
-let p=pass.value;
-
-if(u==""||p==""){
-
-alert("Isi login");
-
-return;
-
-}
-
-loading("flex");
 
 let res=
 await fetch(API,{
@@ -478,9 +253,9 @@ body:new URLSearchParams({
 
 action:"login",
 
-username:u,
+username:u.value,
 
-password:p,
+password:p.value,
 
 key:"SIGAP2026"
 
@@ -491,19 +266,19 @@ key:"SIGAP2026"
 let data=
 await res.json();
 
-loading("none");
-
 if(data.status){
 
 localStorage.nama=data.nama;
 
 localStorage.jabatan=data.jabatan;
 
-localStorage.role=data.role;
+nama.innerText=data.nama;
 
-initDashboard();
+jabatan.innerText=data.jabatan;
 
-openPage("homePage");
+loadDashboard();
+
+page("home");
 
 }
 else{
@@ -514,67 +289,103 @@ alert("Login gagal");
 
 }
 
-function initDashboard(){
+async function loadDashboard(){
 
-namaUser.innerText=
-localStorage.nama;
+let res=
+await fetch(API,{
 
-jabatanUser.innerText=
-localStorage.jabatan;
+method:"POST",
 
-profileNama.innerText=
-"Nama : "+localStorage.nama;
+body:new URLSearchParams({
 
-profileJabatan.innerText=
-"Jabatan : "+localStorage.jabatan;
+action:"dashboard",
 
-profileRole.innerText=
-"Role : "+localStorage.role;
+nama:localStorage.nama,
 
-}
+key:"SIGAP2026"
 
-function logout(){
+})
 
-localStorage.clear();
+});
 
-openPage("loginPage");
+let d=
+await res.json();
 
-}
-
-function toggleDark(){
-
-document.body
-.classList.toggle("dark");
+hadir.innerText=d.hadir;
 
 }
 
-function absenMasuk(){
+async function loadHistory(){
 
-alert("Module 3 kamera + GPS");
+let res=
+await fetch(API,{
+
+method:"POST",
+
+body:new URLSearchParams({
+
+action:"history",
+
+nama:localStorage.nama,
+
+key:"SIGAP2026"
+
+})
+
+});
+
+let d=
+await res.json();
+
+let html="";
+
+d.data.forEach(r=>{
+
+html+=r[0]+" "+r[3]+"<br>";
+
+});
+
+list.innerHTML=html;
+
+page("history");
 
 }
 
-function absenPulang(){
+async function kirimIzin(){
 
-alert("Module 3 kamera + GPS");
+await fetch(API,{
+
+method:"POST",
+
+body:new URLSearchParams({
+
+action:"izin",
+
+nama:localStorage.nama,
+
+ket:ket.value,
+
+key:"SIGAP2026"
+
+})
+
+});
+
+alert("Izin terkirim");
+
+page("home");
 
 }
 
-function kirimIzin(){
+function openHome(){
 
-alert("Module 4 izin system");
-
-}
-
-window.onload=function(){
-
-if(localStorage.nama){
-
-initDashboard();
-
-openPage("homePage");
+page("home");
 
 }
+
+function openIzin(){
+
+page("izin");
 
 }
 
