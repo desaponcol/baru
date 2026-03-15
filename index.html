@@ -1,33 +1,56 @@
 <!DOCTYPE html>
+
 <html>
 
 <head>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Absensi Desa</title>
+<title>SIGAP DESA</title>
 
 <style>
 
-body{
+*{
 
 margin:0;
 
+padding:0;
+
+box-sizing:border-box;
+
 font-family:system-ui;
 
-background:#f1f4f9;
+}
+
+body{
+
+background:#f4f7fb;
 
 }
 
 .header{
 
-background:#ff6b6b;
+background:linear-gradient(135deg,#c8a96a,#8b6f3d);
 
 color:white;
 
 padding:20px;
 
-border-radius:0 0 20px 20px;
+border-radius:0 0 25px 25px;
+
+}
+
+.header h2{
+
+font-size:20px;
+
+}
+
+.container{
+
+padding:15px;
+
+padding-bottom:90px;
 
 }
 
@@ -35,13 +58,13 @@ border-radius:0 0 20px 20px;
 
 background:white;
 
-margin:15px;
-
 padding:15px;
 
 border-radius:15px;
 
-box-shadow:0 5px 15px rgba(0,0,0,0.1);
+margin-bottom:15px;
+
+box-shadow:0 5px 20px rgba(0,0,0,0.08);
 
 }
 
@@ -49,17 +72,17 @@ button{
 
 width:100%;
 
-padding:15px;
+padding:14px;
 
 border:none;
 
 border-radius:12px;
 
-background:#ff6b6b;
+background:#c8a96a;
 
 color:white;
 
-font-size:16px;
+font-size:15px;
 
 margin-top:10px;
 
@@ -71,25 +94,23 @@ width:100%;
 
 padding:12px;
 
-margin:5px 0;
-
 border-radius:10px;
 
 border:1px solid #ddd;
 
-}
-
-video{
-
-width:100%;
-
-border-radius:10px;
+margin-top:8px;
 
 }
 
-.hidden{
+.page{
 
 display:none;
+
+}
+
+.active{
+
+display:block;
 
 }
 
@@ -107,9 +128,71 @@ display:flex;
 
 justify-content:space-around;
 
+padding:12px;
+
+box-shadow:0 -5px 20px rgba(0,0,0,0.08);
+
+}
+
+.nav{
+
+text-align:center;
+
+font-size:12px;
+
+color:#777;
+
+}
+
+.nav div{
+
+font-size:22px;
+
+}
+
+.stat{
+
+display:flex;
+
+justify-content:space-between;
+
+margin-top:10px;
+
+}
+
+.box{
+
+background:#fafafa;
+
 padding:10px;
 
-box-shadow:0 -3px 10px rgba(0,0,0,0.1);
+border-radius:10px;
+
+width:32%;
+
+text-align:center;
+
+}
+
+.dark{
+
+background:#1e1e1e;
+
+color:white;
+
+}
+
+.dark .card{
+
+background:#2b2b2b;
+
+color:white;
+
+}
+
+.dark .bottom{
+
+background:#2b2b2b;
 
 }
 
@@ -119,15 +202,23 @@ box-shadow:0 -3px 10px rgba(0,0,0,0.1);
 
 <body>
 
-<div id="login">
+<!-- LOGIN -->
+
+<div id="loginPage" class="page active">
 
 <div class="header">
 
-<h2>Absensi Desa</h2>
+<h2>SIGAP DESA</h2>
+
+<p>Sistem Absensi Digital</p>
 
 </div>
 
+<div class="container">
+
 <div class="card">
+
+<h3>Login</h3>
 
 <input id="user" placeholder="Username">
 
@@ -135,7 +226,7 @@ box-shadow:0 -3px 10px rgba(0,0,0,0.1);
 
 <button onclick="login()">
 
-LOGIN
+MASUK
 
 </button>
 
@@ -143,49 +234,127 @@ LOGIN
 
 </div>
 
-<div id="app" class="hidden">
+</div>
+
+<!-- DASHBOARD -->
+
+<div id="homePage" class="page">
 
 <div class="header">
 
-<h2 id="nama"></h2>
+<h2 id="namaUser"></h2>
 
 <p>Dashboard</p>
 
 </div>
 
+<div class="container">
+
 <div class="card">
 
-<h3>Camera</h3>
+<h3>Statistik</h3>
 
-<video id="video" autoplay></video>
+<div class="stat">
 
-<button onclick="startCamera()">
+<div class="box">
 
-Buka Kamera
+Hadir
 
-</button>
+<h2 id="hadir">
 
-<button onclick="capture('masuk')">
+0
 
-Absen Masuk
+</h2>
 
-</button>
+</div>
 
-<button onclick="capture('pulang')">
+<div class="box">
 
-Absen Pulang
+Izin
 
-</button>
+<h2>
+
+0
+
+</h2>
+
+</div>
+
+<div class="box">
+
+Cuti
+
+<h2>
+
+0
+
+</h2>
+
+</div>
+
+</div>
 
 </div>
 
 <div class="card">
 
-<h3>Ajukan Izin</h3>
+<h3>Absensi</h3>
 
-<input id="ket" placeholder="Keterangan">
+<button>
 
-<button onclick="izin()">
+ABSEN MASUK
+
+</button>
+
+<button>
+
+ABSEN PULANG
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- HISTORY -->
+
+<div id="historyPage" class="page">
+
+<div class="header">
+
+<h2>History</h2>
+
+</div>
+
+<div class="container">
+
+<div id="historyList">
+
+</div>
+
+</div>
+
+</div>
+
+<!-- IZIN -->
+
+<div id="izinPage" class="page">
+
+<div class="header">
+
+<h2>Izin</h2>
+
+</div>
+
+<div class="container">
+
+<div class="card">
+
+<input placeholder="Keterangan">
+
+<button>
 
 Kirim Izin
 
@@ -193,17 +362,33 @@ Kirim Izin
 
 </div>
 
-<div class="card">
-
-<h3>History</h3>
-
-<div id="history">
+</div>
 
 </div>
 
-<button onclick="loadHistory()">
+<!-- PROFILE -->
 
-Refresh
+<div id="profilePage" class="page">
+
+<div class="header">
+
+<h2>Profile</h2>
+
+</div>
+
+<div class="container">
+
+<div class="card">
+
+<button onclick="toggleDark()">
+
+Dark Mode
+
+</button>
+
+<button onclick="logout()">
+
+Logout
 
 </button>
 
@@ -211,223 +396,98 @@ Refresh
 
 </div>
 
+</div>
+
+<!-- NAVIGATION -->
+
+<div class="bottom">
+
+<div class="nav" onclick="openPage('homePage')">
+
+<div>
+
+🏠
+
+</div>
+
+Home
+
+</div>
+
+<div class="nav" onclick="openPage('historyPage')">
+
+<div>
+
+📋
+
+</div>
+
+History
+
+</div>
+
+<div class="nav" onclick="openPage('izinPage')">
+
+<div>
+
+📝
+
+</div>
+
+Izin
+
+</div>
+
+<div class="nav" onclick="openPage('profilePage')">
+
+<div>
+
+👤
+
+</div>
+
+Profile
+
+</div>
+
+</div>
+
 <script>
 
-const API="https://script.google.com/macros/s/AKfycbz6bsPOFty1z1caTEChZug-6xppXcxPQqXxvVTtDDi3jCjfu4CSh0sFzt9W66wsCdiQ/exec";
+function openPage(id){
 
-let stream;
+document
+.querySelectorAll(".page")
+.forEach(p=>{
 
-async function login()
-{
-
-let res=
-await fetch(API,{
-
-method:"POST",
-
-body:new URLSearchParams({
-
-action:"login",
-
-username:user.value,
-
-password:pass.value,
-
-key:"SIGAP2026"
-
-})
+p.classList.remove("active");
 
 });
 
-let data=await res.json();
-
-if(data.status)
-{
-
-localStorage.nama=data.nama;
-
-localStorage.jabatan=data.jabatan;
-
-login.classList.add("hidden");
-
-app.classList.remove("hidden");
-
-nama.innerText=data.nama;
-
-loadHistory();
+document
+.getElementById(id)
+.classList.add("active");
 
 }
 
-else
-alert("Login gagal");
+function login(){
+
+namaUser.innerText=user.value;
+
+openPage("homePage");
 
 }
 
-async function startCamera()
-{
+function logout(){
 
-stream=
-await navigator.mediaDevices.getUserMedia({
-
-video:true
-
-});
-
-video.srcObject=stream;
+openPage("loginPage");
 
 }
 
-function gps()
-{
+function toggleDark(){
 
-return new Promise(res=>{
-
-navigator.geolocation.getCurrentPosition(
-
-p=>{
-
-res({
-
-lat:p.coords.latitude,
-
-lng:p.coords.longitude
-
-});
-
-}
-
-);
-
-});
-
-}
-
-async function capture(type)
-{
-
-let canvas=
-document.createElement("canvas");
-
-canvas.width=300;
-
-canvas.height=300;
-
-let ctx=
-canvas.getContext("2d");
-
-ctx.drawImage(video,0,0);
-
-let img=
-canvas.toDataURL("image/jpeg")
-.split(",")[1];
-
-let g=
-await gps();
-
-let act=
-type=="masuk"?
-"absenMasuk":
-"absenPulang";
-
-let res=
-await fetch(API,{
-
-method:"POST",
-
-body:new URLSearchParams({
-
-action:act,
-
-nama:localStorage.nama,
-
-jabatan:localStorage.jabatan,
-
-foto:img,
-
-lat:g.lat,
-
-lng:g.lng,
-
-key:"SIGAP2026"
-
-})
-
-});
-
-let d=
-await res.json();
-
-alert("Berhasil");
-
-loadHistory();
-
-}
-
-async function loadHistory()
-{
-
-let res=
-await fetch(API,{
-
-method:"POST",
-
-body:new URLSearchParams({
-
-action:"history",
-
-nama:localStorage.nama,
-
-key:"SIGAP2026"
-
-})
-
-});
-
-let d=
-await res.json();
-
-history.innerHTML="";
-
-d.data.forEach(r=>{
-
-history.innerHTML+=
-
-"<div class='card'>"+
-
-r[1]+"<br>"+
-
-r[4]+" - "+
-
-r[5]+
-
-"</div>";
-
-});
-
-}
-
-async function izin()
-{
-
-await fetch(API,{
-
-method:"POST",
-
-body:new URLSearchParams({
-
-action:"izin",
-
-nama:localStorage.nama,
-
-ket:ket.value,
-
-key:"SIGAP2026"
-
-})
-
-});
-
-alert("Izin dikirim");
+document.body
+.classList.toggle("dark");
 
 }
 
