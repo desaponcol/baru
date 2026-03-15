@@ -59,7 +59,11 @@ margin:5px;
 LOGIN
 
 </button>
+<button onclick="absen()">
 
+ABSEN MASUK
+
+</button>
 <script>
 
 const API="https://script.google.com/macros/s/AKfycby7US4cTwebBFmXJ8O4Wo8gMk2fWr3NQz0fbqb4WFLwLzhWWqtEtOMAJ1XGHQ7CuATw/exec";
@@ -111,7 +115,52 @@ alert("Login gagal");
 }
 
 }
+async function absen()
+{
 
+navigator
+.geolocation
+.getCurrentPosition(async pos=>{
+
+let lat=
+pos.coords.latitude;
+
+let lng=
+pos.coords.longitude;
+
+let res=
+await fetch(API,{
+
+method:"POST",
+
+body:new URLSearchParams({
+
+action:"absenMasuk",
+
+nama:localStorage.nama,
+
+jabatan:"KAUR",
+
+lat:lat,
+
+lng:lng,
+
+foto:"",
+
+key:"SIGAP2026"
+
+})
+
+});
+
+let data=
+await res.json();
+
+alert("Absensi berhasil");
+
+});
+
+}
 </script>
 
 </body>
