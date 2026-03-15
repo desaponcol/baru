@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+
+body{
+
+font-family:Arial;
+
+padding:20px;
+
+}
+
+button{
+
+width:100%;
+
+padding:15px;
+
+background:#ff6b6b;
+
+color:white;
+
+border:none;
+
+border-radius:10px;
+
+}
+
+input{
+
+width:100%;
+
+padding:10px;
+
+margin:5px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h2>Absensi Desa</h2>
+
+<input id="user" placeholder="username">
+
+<input id="pass" placeholder="password">
+
+<button onclick="login()">
+
+LOGIN
+
+</button>
+
+<script>
+
+const API="https://script.google.com/macros/s/AKfycby7US4cTwebBFmXJ8O4Wo8gMk2fWr3NQz0fbqb4WFLwLzhWWqtEtOMAJ1XGHQ7CuATw/exec";
+
+async function login()
+{
+
+let u=
+document.getElementById("user").value;
+
+let p=
+document.getElementById("pass").value;
+
+let res=
+await fetch(API,{
+
+method:"POST",
+
+body:new URLSearchParams({
+
+action:"login",
+
+username:u,
+
+password:p,
+
+key:"SIGAP2026"
+
+})
+
+});
+
+let data=
+await res.json();
+
+if(data.status)
+{
+
+alert("Login berhasil");
+
+localStorage.nama=data.nama;
+
+}
+else
+{
+
+alert("Login gagal");
+
+}
+
+}
+
+</script>
+
+</body>
+
+</html>
